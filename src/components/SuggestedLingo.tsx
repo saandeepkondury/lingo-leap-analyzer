@@ -1,4 +1,3 @@
-
 import { Badge } from '@/components/ui/badge';
 import { Lightbulb, Copy } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
@@ -11,7 +10,7 @@ export const SuggestedLingo = ({ suggestions }: SuggestedLingoProps) => {
   const { toast } = useToast();
   
   const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeTextNode(text);
+    navigator.clipboard.writeText(text);
     toast({
       title: "Copied!",
       description: `"${text}" copied to clipboard`,
