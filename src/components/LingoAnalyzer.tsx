@@ -8,6 +8,7 @@ import { Loader2, Search, Globe } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { LingoData } from '@/types/lingo';
 import { generateMockLingoData } from '@/utils/mockLingoData';
+import { scrapeLingoData } from '@/utils/scrapeLingoData';
 
 interface LingoAnalyzerProps {
   onAnalysisComplete: (data: LingoData) => void;
@@ -51,8 +52,13 @@ export const LingoAnalyzer = ({ onAnalysisComplete, onAnalysisStart, isAnalyzing
       await new Promise(resolve => setTimeout(resolve, 800));
     }
 
-    // Generate mock data
-    const analysisData = generateMockLingoData(url);
+    let analysisData: LingoData | null = null;
+    try {
+      analysisData = await scrapeLingoData(url);
+    } catch (err) {
+      console.error('Scrape failed, falling back to mock data', err);
+      analysisData = generateMockLingoData(url);
+    }
     
     toast({
       title: "Analysis Complete",
